@@ -7,9 +7,13 @@ fn main() {
     let a = world.spawn((123, true, "abc"));
     let b = world.spawn((42, false));
 
-    for (id, (number, flag)) in world.query::<(&i32, &bool)>() {
-        println!("entity: {id} - {number} - {flag}")
+    for (id, (number)) in world.query::<(&i32,)>() {
+        println!("entity: {id} - {number}")
     }
+
+    // for (id, (number, flag)) in world.query::<(&i32, &bool)>() {
+    //     println!("entity: {id} - {number} - {flag}")
+    // }
 
     // for (id, (number, &flag)) in world.query_mut::<(&mut i32, &bool)>() {
     //     if flag {

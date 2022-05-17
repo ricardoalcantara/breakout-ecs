@@ -1,9 +1,7 @@
-use std::cell::{RefCell, RefMut};
+use crate::query::{Query, QueryBorrow};
 
-use super::{
-    component::{ComponentBundle, ComponentVec},
-    query::{QueryIterator, QueryParameters},
-};
+use super::component::{ComponentBundle, ComponentVec};
+use std::cell::{RefCell, RefMut};
 
 pub struct World {
     entities_count: usize,
@@ -85,11 +83,11 @@ impl World {
     pub fn get(&self, _entity: usize) {}
     pub fn get_mut(&self, _entity: usize) {}
 
-    pub fn query<T: QueryParameters>(&self) -> QueryIterator<T> {
-        todo!()
+    pub fn query<T: Query>(&self) -> QueryBorrow<T> {
+        T::new(self)
     }
 
-    pub fn query_mut<T: QueryParameters>(&self) -> QueryIterator<T> {
-        todo!()
-    }
+    // pub fn query_mut<T: QueryParameters>(&self) -> QueryResult<T> {
+    //     todo!()
+    // }
 }
