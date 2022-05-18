@@ -72,3 +72,70 @@ impl<A: 'static, B: 'static> Query for (A, B) {
         QueryResult { result: r }
     }
 }
+
+impl<A: 'static, B: 'static, C: 'static> Query for (A, B, C) {
+    type Item = (usize, (Rc<RefCell<A>>, Rc<RefCell<B>>, Rc<RefCell<C>>));
+    fn fetch(world: &mut World) -> QueryResult<Self::Item> {
+        let a = world.borrow_component_vec::<A>().unwrap();
+        let b = world.borrow_component_vec::<B>().unwrap();
+        let c = world.borrow_component_vec::<C>().unwrap();
+
+        let r = a
+            .iter()
+            .zip(b.iter())
+            .zip(c.iter())
+            .enumerate()
+            .filter_map(|(i, ((f1, f2), f3))| {
+                Some((
+                    i,
+                    (
+                        f1.as_ref()?.clone(),
+                        f2.as_ref()?.clone(),
+                        f3.as_ref()?.clone(),
+                    ),
+                ))
+            })
+            .collect();
+
+        QueryResult { result: r }
+    }
+}
+
+impl<A: 'static, B: 'static, C: 'static, D: 'static> Query for (A, B, C, D) {
+    type Item = (
+        usize,
+        (
+            Rc<RefCell<A>>,
+            Rc<RefCell<B>>,
+            Rc<RefCell<C>>,
+            Rc<RefCell<D>>,
+        ),
+    );
+    fn fetch(world: &mut World) -> QueryResult<Self::Item> {
+        let a = world.borrow_component_vec::<A>().unwrap();
+        let b = world.borrow_component_vec::<B>().unwrap();
+        let c = world.borrow_component_vec::<C>().unwrap();
+        let d = world.borrow_component_vec::<D>().unwrap();
+
+        let r = a
+            .iter()
+            .zip(b.iter())
+            .zip(c.iter())
+            .zip(d.iter())
+            .enumerate()
+            .filter_map(|(i, (((f1, f2), f3), f4))| {
+                Some((
+                    i,
+                    (
+                        f1.as_ref()?.clone(),
+                        f2.as_ref()?.clone(),
+                        f3.as_ref()?.clone(),
+                        f4.as_ref()?.clone(),
+                    ),
+                ))
+            })
+            .collect();
+
+        QueryResult { result: r }
+    }
+}
